@@ -1,7 +1,7 @@
 {
   "$schema": "https://www.raycast.com/schemas/extension.json",
   "name": "youversion-suggest-raycast",
-  "title": "youversion-suggest-raycast",
+  "title": "YouVersion Suggest",
   "description": "A Raycast extension for searching the YouVersion Bible quickly and easily",
   "icon": "command-icon.png",
   "author": "caleb531",
