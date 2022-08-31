@@ -1,0 +1,40 @@
+{
+  "$schema": "https://www.raycast.com/schemas/extension.json",
+  "name": "youversion-suggest-raycast",
+  "title": "youversion-suggest-raycast",
+  "description": "A Raycast extension for searching the YouVersion Bible quickly and easily",
+  "icon": "command-icon.png",
+  "author": "caleb531",
+  "categories": [
+    "Productivity"
+  ],
+  "license": "MIT",
+  "commands": [
+    {
+      "name": "index",
+      "title": "Filter Bible Reference",
+      "subtitle": "Type the name of a chapter, verse, or range of verses",
+      "description": "Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference",
+      "mode": "view"
+    }
+  ],
+  "dependencies": {
+    "@raycast/api": "^1.39.1",
+    "node-fetch": "^3.0.0"
+  },
+  "devDependencies": {
+    "@typescript-eslint/eslint-plugin": "^5.0.0",
+    "@typescript-eslint/parser": "^5.0.0",
+    "eslint": "^7.32.0",
+    "eslint-config-prettier": "^8.3.0",
+    "prettier": "^2.5.1",
+    "typescript": "^4.4.3"
+  },
+  "scripts": {
+    "build": "ray build -e dist",
+    "dev": "ray develop",
+    "fix-lint": "ray lint --fix",
+    "lint": "ray lint",
+    "publish": "ray publish"
+  }
+}
