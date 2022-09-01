@@ -1,6 +1,6 @@
-import { ActionPanel, Action, List, showToast, Toast } from "@raycast/api";
-import { useState, useEffect, useRef, useCallback } from "react";
+import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
 import fetch, { AbortError } from "node-fetch";
+import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Command() {
   const { state, search } = useSearch();

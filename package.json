@@ -11,7 +11,7 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "index",
+      "name": "filter",
       "title": "Filter Bible Reference",
       "subtitle": "Type the name of a chapter, verse, or range of verses",
       "description": "Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference",
