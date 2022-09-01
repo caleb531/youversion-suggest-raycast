@@ -1,6 +1,6 @@
 import fsPromises from "fs/promises";
 import path from "path";
-import { BibleData, JSONSerializable } from "./types";
+import { BibleBookMetadata, BibleData, JSONSerializable } from "./types";
 
 export function normalizeSearchText(searchText: string): string {
   searchText = searchText.toLowerCase();
@@ -18,4 +18,8 @@ export async function getJSONData<T extends JSONSerializable>(path: string): Pro
 
 export async function getBibleData(language: string): Promise<BibleData> {
   return getJSONData(path.join(__dirname, "assets", "data", "bible", `bible-${language}.json`));
+}
+
+export async function getBibleBookMetadata(): Promise<{ [key: string]: BibleBookMetadata }> {
+  return getJSONData(path.join(__dirname, "assets", "data", "bible", `book-metadata.json`));
 }

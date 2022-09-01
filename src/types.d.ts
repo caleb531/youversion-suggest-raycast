@@ -38,3 +38,9 @@ export interface BibleData {
   default_version: BibleVersion;
   language: BibleLanguage;
 }
+
+export interface BibleBookMetadata {
+  canon: string;
+  chapters: number;
+  verses: number[];
+}

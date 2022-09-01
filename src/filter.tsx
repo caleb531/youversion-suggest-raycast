@@ -1,8 +1,9 @@
 import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
+import { sortBy } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 import { getPreferredLanguageId, getPreferredVersionId } from "./preferences";
-import { BibleData, BibleVersion, BibleVersionId } from "./types";
-import { getBibleData, normalizeSearchText as coreNormalizeSearchText } from "./utilities";
+import { BibleBook, BibleBookMetadata, BibleData, BibleVersion, BibleVersionId } from "./types";
+import { getBibleBookMetadata, getBibleData, normalizeSearchText as coreNormalizeSearchText } from "./utilities";
 
 export default function Command() {
   const { state, search } = useSearch();
@@ -114,7 +115,7 @@ function getSearchParams(searchText: string): SearchParams | null {
     return null;
   }
 
-  const searchParams: SearchParams = {};
+  const searchParams: SearchParams = { book: "" };
 
   const bookMatch = refMatch[1];
   searchParams.book = bookMatch.trimEnd();
@@ -176,6 +177,43 @@ function chooseBestVersion(
   return null;
 }
 
+function splitBookNameIntoParts(bookName: string) {
+  const bookWords = normalizeSearchText(bookName).split(" ");
+  return bookWords.map((_word, w) => bookWords.slice(w).join(" "));
+}
+
+async function getMatchingBooks(allBooks: BibleBook[], searchParams: SearchParams, chosenVersion: BibleVersion | null) {
+  const matchingBooks: BookMatch[] = [];
+  const bookMetadata = await getBibleBookMetadata();
+
+  allBooks.forEach((book, b) => {
+    const bookNameWords = splitBookNameIntoParts(book.name);
+    const w = bookNameWords.findIndex((bookNameWord) => {
+      return bookNameWord.startsWith(searchParams.book);
+    });
+    if (w !== -1) {
+      matchingBooks.push({
+        ...book,
+        // Give more priority to book names that are matched sooner
+        // (e.g. if the query matched the first word of a book name,
+        // as opposed to the second or third word)
+        priority: (w + 1) * 100 + b,
+        // Store the metadata for the respective book (e.g. chapter
+        // count) on this matching book object for convenience
+        metadata: bookMetadata[book.id],
+      });
+    }
+  });
+  return sortBy(matchingBooks, (book) => book.priority);
+}
+
+function getSearchResult(bibleBook: BibleBook, searchText: string, chosenVersion: BibleVersion | null) {
+  return {
+    ...bibleBook,
+    url: "",
+  };
+}
+
 async function getSearchResults(searchText: string): Promise<SearchResult[]> {
   searchText = normalizeSearchText(searchText);
   const searchParams = getSearchParams(searchText);
@@ -190,18 +228,14 @@ async function getSearchResults(searchText: string): Promise<SearchResult[]> {
 
   const chosenVersion = chooseBestVersion(await getPreferredVersionId(), bible, searchParams);
 
-  console.log("searchParams", searchParams);
+  return (await getMatchingBooks(bible.books, searchParams, chosenVersion)).map((bibleBook) => {
+    return getSearchResult(bibleBook, searchText, chosenVersion);
+  });
+}
 
-  return bible.books
-    .map((bibleBook) => {
-      return {
-        ...bibleBook,
-        url: "",
-      };
-    })
-    .filter((bibleRef) => {
-      return bibleRef.name && bibleRef.name.toLowerCase().startsWith(searchText);
-    });
+interface BookMatch extends BibleBook {
+  priority: number;
+  metadata: BibleBookMetadata;
 }
 
 interface SearchState {
@@ -214,7 +248,7 @@ interface SearchResult {
   url: string;
 }
 interface SearchParams {
-  book?: string;
+  book: string;
   chapter?: number;
   verse?: number;
   endVerse?: number;
