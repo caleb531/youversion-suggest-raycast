@@ -1,5 +1,5 @@
 import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
-import fetch, { AbortError } from "node-fetch";
+import fetch, { AbortError, RequestInit } from "node-fetch";
 import { useCallback, useEffect, useRef, useState } from "react";
 
 export default function Command() {
@@ -100,7 +100,7 @@ async function performSearch(searchText: string, signal: AbortSignal): Promise<S
 
   const response = await fetch("https://api.npms.io/v2/search" + "?" + params.toString(), {
     method: "get",
-    signal: signal,
+    signal: signal as RequestInit['signal'],
   });
 
   const json = (await response.json()) as
