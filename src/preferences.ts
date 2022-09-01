@@ -4,10 +4,10 @@ export async function getPreferenceValue<T extends LocalStorage.Value>(id: strin
   return LocalStorage.getItem(id);
 }
 
-export async function getPreferredLanguage(): Promise<string> {
+export async function getPreferredLanguageId(): Promise<string> {
   return (await getPreferenceValue<string>("yvs-language")) || "eng";
 }
 
-export async function getPreferredVersion(): Promise<number> {
+export async function getPreferredVersionId(): Promise<number> {
   return (await getPreferenceValue<number>("yvs-version")) || 111;
 }
