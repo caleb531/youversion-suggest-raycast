@@ -1,6 +1,8 @@
 import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
-import fetch, { AbortError, RequestInit } from "node-fetch";
-import { useCallback, useEffect, useRef, useState } from "react";
+import path from "path";
+import { useCallback, useEffect, useState } from "react";
+import { getPreferredLanguage } from "./preferences";
+import { getBibleData } from "./utilities";
 
 export default function Command() {
   const { state, search } = useSearch();
@@ -9,11 +11,10 @@ export default function Command() {
     <List
       isLoading={state.isLoading}
       onSearchTextChange={search}
-      searchBarPlaceholder="Search npm packages..."
-      throttle
+      searchBarPlaceholder="Type the name of a chapter, verse, or range or verses..."
     >
       <List.Section title="Results" subtitle={state.results.length + ""}>
-        {state.results.map((searchResult) => (
+        {state.results.map((searchResult: SearchResult) => (
           <SearchListItem key={searchResult.name} searchResult={searchResult} />
         ))}
       </List.Section>
@@ -25,8 +26,6 @@ function SearchListItem({ searchResult }: { searchResult: SearchResult }) {
   return (
     <List.Item
       title={searchResult.name}
-      subtitle={searchResult.description}
-      accessoryTitle={searchResult.username}
       actions={
         <ActionPanel>
           <ActionPanel.Section>
@@ -47,18 +46,15 @@ function SearchListItem({ searchResult }: { searchResult: SearchResult }) {
 
 function useSearch() {
   const [state, setState] = useState<SearchState>({ results: [], isLoading: true });
-  const cancelRef = useRef<AbortController | null>(null);
 
   const search = useCallback(
     async function search(searchText: string) {
-      cancelRef.current?.abort();
-      cancelRef.current = new AbortController();
       setState((oldState) => ({
         ...oldState,
         isLoading: true,
       }));
       try {
-        const results = await performSearch(searchText, cancelRef.current.signal);
+        const results = await getSearchResults(searchText);
         setState((oldState) => ({
           ...oldState,
           results: results,
@@ -70,22 +66,15 @@ function useSearch() {
           isLoading: false,
         }));
 
-        if (error instanceof AbortError) {
-          return;
-        }
-
         console.error("search error", error);
         showToast({ style: Toast.Style.Failure, title: "Could not perform search", message: String(error) });
       }
     },
-    [cancelRef, setState]
+    [setState]
   );
 
   useEffect(() => {
     search("");
-    return () => {
-      cancelRef.current?.abort();
-    };
   }, []);
 
   return {
@@ -94,45 +83,38 @@ function useSearch() {
   };
 }
 
-async function performSearch(searchText: string, signal: AbortSignal): Promise<SearchResult[]> {
-  const params = new URLSearchParams();
-  params.append("q", searchText.length === 0 ? "@raycast/api" : searchText);
+async function getSearchResults(searchText: string): Promise<SearchResult[]> {
+  const searchTextLower = searchText.toLowerCase();
+  const bibleFilePath = path.join(__dirname, `assets/data/bible/bible-${await getPreferredLanguage()}.json`);
+  const json = await getBibleData<BibleData>(bibleFilePath);
 
-  const response = await fetch("https://api.npms.io/v2/search" + "?" + params.toString(), {
-    method: "get",
-    signal: signal as RequestInit['signal'],
-  });
+  return json.books
+    .map((bibleBook) => {
+      return {
+        ...bibleBook,
+        url: "",
+      };
+    })
+    .filter((bibleRef) => {
+      return bibleRef.name && bibleRef.name.toLowerCase().startsWith(searchTextLower);
+    });
+}
 
-  const json = (await response.json()) as
-    | {
-        results: {
-          package: { name: string; description?: string; publisher?: { username: string }; links: { npm: string } };
-        }[];
-      }
-    | { code: string; message: string };
+interface BibleData {
+  books: BibleBook[];
+}
 
-  if (!response.ok || "message" in json) {
-    throw new Error("message" in json ? json.message : response.statusText);
-  }
-
-  return json.results.map((result) => {
-    return {
-      name: result.package.name,
-      description: result.package.description,
-      username: result.package.publisher?.username,
-      url: result.package.links.npm,
-    };
-  });
+interface BibleBook {
+  id: string;
+  name: string;
 }
 
 interface SearchState {
   results: SearchResult[];
   isLoading: boolean;
 }
-
 interface SearchResult {
+  id: string;
   name: string;
-  description?: string;
-  username?: string;
   url: string;
 }
