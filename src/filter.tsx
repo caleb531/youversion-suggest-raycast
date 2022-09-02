@@ -42,7 +42,7 @@ function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
       title={searchResult.name}
       actions={
         <ActionPanel>
-          <Action.OpenInBrowser title="Open in Browser" url={searchResult.url} />
+          <Action.OpenInBrowser title="View on YouVersion" url={searchResult.url} />
         </ActionPanel>
       }
     />
