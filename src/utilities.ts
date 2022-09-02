@@ -19,12 +19,13 @@ export function getReferenceID({
   endVerse,
   version,
 }: Pick<BibleReference, "book" | "chapter" | "verse" | "endVerse" | "version">) {
+  const bookId = book.id.toUpperCase();
   if (endVerse && verse) {
-    return `${version}/${book.id}.${chapter}.${verse}-${endVerse}`;
+    return `${version.id}/${bookId}.${chapter}.${verse}-${endVerse}`;
   } else if (verse) {
-    return `${version}/${book.id}.${chapter}.${verse}`;
+    return `${version.id}/${bookId}.${chapter}.${verse}`;
   } else {
-    return `${version}/${book.id}.${chapter}`;
+    return `${version.id}/${bookId}.${chapter}`;
   }
 }
 
