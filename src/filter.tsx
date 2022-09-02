@@ -2,8 +2,21 @@ import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
 import { sortBy } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 import { getPreferredLanguageId, getPreferredVersionId } from "./preferences";
-import { BibleBook, BibleBookMetadata, BibleData, BibleVersion, BibleVersionId } from "./types";
-import { getBibleBookMetadata, getBibleData, normalizeSearchText as coreNormalizeSearchText } from "./utilities";
+import {
+  BibleBook,
+  BibleBookId,
+  BibleBookMetadata,
+  BibleData,
+  BibleReference,
+  BibleVersion,
+  BibleVersionId,
+} from "./types";
+import {
+  buildReference,
+  getBibleBookMetadata,
+  getBibleData,
+  normalizeSearchText as coreNormalizeSearchText,
+} from "./utilities";
 
 export default function Command() {
   const { state, search } = useSearch();
@@ -15,15 +28,15 @@ export default function Command() {
       searchBarPlaceholder="Type the name of a chapter, verse, or range or verses..."
     >
       <List.Section title="Results" subtitle={state.results.length + ""}>
-        {state.results.map((searchResult: SearchResult) => (
-          <SearchListItem key={searchResult.name} searchResult={searchResult} />
+        {state.results.map((searchResult: BibleReference) => (
+          <SearchListItem key={searchResult.id} searchResult={searchResult} />
         ))}
       </List.Section>
     </List>
   );
 }
 
-function SearchListItem({ searchResult }: { searchResult: SearchResult }) {
+function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
   return (
     <List.Item
       title={searchResult.name}
@@ -115,29 +128,19 @@ function getSearchParams(searchText: string): SearchParams | null {
     return null;
   }
 
-  const searchParams: SearchParams = { book: "" };
-
   const bookMatch = refMatch[1];
-  searchParams.book = bookMatch.trimEnd();
-
   const chapterMatch = refMatch[2];
-  if (chapterMatch) {
-    searchParams.chapter = Math.max(1, parseInt(chapterMatch, 10));
-  }
   const verseMatch = refMatch[3];
-  if (verseMatch) {
-    searchParams.verse = Math.max(1, parseInt(verseMatch, 10));
-  }
   const endVerseMatch = refMatch[4];
-  if (endVerseMatch) {
-    searchParams.endVerse = parseInt(endVerseMatch, 10);
-  }
   const versionMatch = refMatch[5];
-  if (versionMatch) {
-    searchParams.version = normalizeSearchText(versionMatch);
-  }
 
-  return searchParams;
+  return {
+    book: bookMatch || "",
+    chapter: chapterMatch ? Math.max(1, parseInt(chapterMatch, 10)) : 1,
+    verse: verseMatch ? Math.max(1, parseInt(verseMatch, 10)) : null,
+    endVerse: endVerseMatch ? parseInt(endVerseMatch, 10) : null,
+    version: verseMatch ? normalizeSearchText(versionMatch) : null,
+  };
 }
 
 // Finds a version which best matches the given version query
@@ -168,13 +171,13 @@ function chooseBestVersion(
   preferredVersionId: BibleVersionId,
   bible: BibleData,
   searchParams: SearchParams
-): BibleVersion | null {
+): BibleVersion {
   if (searchParams.version) {
-    return guessVersion(bible.versions, searchParams.version);
+    return guessVersion(bible.versions, searchParams.version) || bible.default_version;
   } else if (preferredVersionId) {
-    return bible.versions.find((version) => version.id === preferredVersionId) || null;
+    return bible.versions.find((version) => version.id === preferredVersionId) || bible.default_version;
   }
-  return null;
+  return bible.default_version;
 }
 
 function splitBookNameIntoParts(bookName: string) {
@@ -182,8 +185,8 @@ function splitBookNameIntoParts(bookName: string) {
   return bookWords.map((_word, w) => bookWords.slice(w).join(" "));
 }
 
-async function getMatchingBooks(allBooks: BibleBook[], searchParams: SearchParams, chosenVersion: BibleVersion | null) {
-  const matchingBooks: BookMatch[] = [];
+async function getMatchingBooks(allBooks: BibleBook[], searchParams: SearchParams) {
+  const matchingBooks: BibleBookMatch[] = [];
   const bookMetadata = await getBibleBookMetadata();
 
   allBooks.forEach((book, b) => {
@@ -207,14 +210,20 @@ async function getMatchingBooks(allBooks: BibleBook[], searchParams: SearchParam
   return sortBy(matchingBooks, (book) => book.priority);
 }
 
-function getSearchResult(bibleBook: BibleBook, searchText: string, chosenVersion: BibleVersion | null) {
-  return {
-    ...bibleBook,
-    url: "",
-  };
+function getSearchResult(book: BibleBookMatch, searchParams: SearchParams, chosenVersion: BibleVersion) {
+  const chapter = Math.min(searchParams.chapter, book.metadata.chapters);
+  const lastVerse = book.metadata.verses[chapter - 1];
+
+  return buildReference({
+    book: book,
+    chapter,
+    verse: searchParams.verse ? Math.min(searchParams.verse, lastVerse) : null,
+    endVerse: searchParams.endVerse ? Math.min(searchParams.endVerse, lastVerse) : null,
+    version: chosenVersion,
+  });
 }
 
-async function getSearchResults(searchText: string): Promise<SearchResult[]> {
+async function getSearchResults(searchText: string): Promise<BibleReference[]> {
   searchText = normalizeSearchText(searchText);
   const searchParams = getSearchParams(searchText);
   if (!searchParams) {
@@ -222,35 +231,26 @@ async function getSearchResults(searchText: string): Promise<SearchResult[]> {
   }
   const bible = await getBibleData(await getPreferredLanguageId());
 
-  if (!searchParams.chapter) {
-    searchParams.chapter = 1;
-  }
-
   const chosenVersion = chooseBestVersion(await getPreferredVersionId(), bible, searchParams);
 
-  return (await getMatchingBooks(bible.books, searchParams, chosenVersion)).map((bibleBook) => {
-    return getSearchResult(bibleBook, searchText, chosenVersion);
+  return (await getMatchingBooks(bible.books, searchParams)).map((bibleBook) => {
+    return getSearchResult(bibleBook, searchParams, chosenVersion);
   });
 }
 
-interface BookMatch extends BibleBook {
+interface BibleBookMatch extends BibleBook {
   priority: number;
   metadata: BibleBookMetadata;
 }
 
 interface SearchState {
-  results: SearchResult[];
+  results: BibleReference[];
   isLoading: boolean;
 }
-interface SearchResult {
-  id: string;
-  name: string;
-  url: string;
-}
 interface SearchParams {
-  book: string;
-  chapter?: number;
-  verse?: number;
-  endVerse?: number;
-  version?: string;
+  book: BibleBookId;
+  chapter: number;
+  verse: number | null;
+  endVerse: number | null;
+  version: string | null;
 }

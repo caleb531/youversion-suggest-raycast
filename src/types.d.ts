@@ -44,3 +44,14 @@ export interface BibleBookMetadata {
   chapters: number;
   verses: number[];
 }
+
+export interface BibleReference {
+  id: string;
+  url: string;
+  name: string;
+  book: BibleBook;
+  chapter: number;
+  verse: number | null;
+  endVerse: number | null;
+  version: BibleVersion;
+}
