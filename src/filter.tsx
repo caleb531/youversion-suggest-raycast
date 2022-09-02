@@ -130,7 +130,7 @@ function getSearchParams(searchText: string): SearchParams | null {
     chapter: chapterMatch ? Math.max(1, parseInt(chapterMatch, 10)) : 1,
     verse: verseMatch ? Math.max(1, parseInt(verseMatch, 10)) : null,
     endVerse: endVerseMatch ? parseInt(endVerseMatch, 10) : null,
-    version: verseMatch ? normalizeSearchText(versionMatch) : null,
+    version: versionMatch ? normalizeSearchText(versionMatch) : null,
   };
 }
 
