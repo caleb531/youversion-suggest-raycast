@@ -92,6 +92,10 @@ export function fetchHTML(url: string): Promise<string> {
 
 export async function copyContentToClipboard(reference: BibleReference) {
   try {
+    showToast({
+      style: Toast.Style.Animated,
+      title: `Copying ${reference.name} to clipboard...`,
+    });
     const referenceContent = await fetchReferenceContent(reference);
     Clipboard.copy(referenceContent);
     showToast({
