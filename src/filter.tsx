@@ -114,16 +114,16 @@ function getReferenceMatches(searchText: string): (string | undefined)[] | null 
 
 // Parse out the search text into its parts (which we are calling 'parameters')
 function getSearchParams(searchText: string): SearchParams | null {
-  const refMatch = getReferenceMatches(searchText);
-  if (!refMatch) {
+  const referenceMatch = getReferenceMatches(searchText);
+  if (!referenceMatch) {
     return null;
   }
 
-  const bookMatch = refMatch[1];
-  const chapterMatch = refMatch[2];
-  const verseMatch = refMatch[3];
-  const endVerseMatch = refMatch[4];
-  const versionMatch = refMatch[5];
+  const bookMatch = referenceMatch[1]?.trimEnd();
+  const chapterMatch = referenceMatch[2];
+  const verseMatch = referenceMatch[3];
+  const endVerseMatch = referenceMatch[4];
+  const versionMatch = referenceMatch[5];
 
   return {
     book: bookMatch || "",
