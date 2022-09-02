@@ -33,7 +33,7 @@ export async function fetchReferenceContent(reference: BibleReference) {
 }
 
 // Parse the given YouVersion HTML and return a string a reference content
-export function parseContentFromHTML(reference: BibleReference, html: string) {
+export function parseContentFromHTML(reference: BibleReference, html: string): string {
   const $ = cheerio.load(html);
   const $chapter = $(".chapter");
   const contentParts: string[] = [];
