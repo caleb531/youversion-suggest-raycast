@@ -98,7 +98,7 @@ function normalizeSearchText(searchText: string): string {
   return searchText;
 }
 
-function getReferenceMatches(searchText: string): string[] | null {
+function getReferenceMatches(searchText: string): (string | undefined)[] | null {
   const bookRegex = /(\d?(?:[^\W\d_]|\s)+|\d)\s?/;
   const chapterRegex = /(\d+)\s?/;
   const verseRegex = /(\d+)\s?/;
