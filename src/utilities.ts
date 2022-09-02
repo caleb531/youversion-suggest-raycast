@@ -1,5 +1,8 @@
+import { Clipboard, showToast, Toast } from "@raycast/api";
 import fsPromises from "fs/promises";
+import fetch from "node-fetch";
 import path from "path";
+import { fetchReferenceContent } from "./ref-content-fetcher";
 import { BibleBookMetadata, BibleData, BibleReference, JSONSerializable } from "./types";
 
 export function normalizeSearchText(searchText: string): string {
@@ -34,14 +37,13 @@ export function getReferenceName({
   chapter,
   verse,
   endVerse,
-  version,
-}: Pick<BibleReference, "book" | "chapter" | "verse" | "endVerse" | "version">) {
+}: Pick<BibleReference, "book" | "chapter" | "verse" | "endVerse">) {
   if (endVerse && verse) {
-    return `${book.name} ${chapter}:${verse}-${endVerse} (${version.name})`;
+    return `${book.name} ${chapter}:${verse}-${endVerse}`;
   } else if (verse) {
-    return `${book.name} ${chapter}:${verse} (${version.name})`;
+    return `${book.name} ${chapter}:${verse}`;
   } else {
-    return `${book.name} ${chapter} (${version.name})`;
+    return `${book.name} ${chapter}`;
   }
 }
 
@@ -55,7 +57,7 @@ export function buildReference({
   version,
 }: Pick<BibleReference, "book" | "chapter" | "verse" | "endVerse" | "version">) {
   const id = getReferenceID({ book, chapter, verse, endVerse, version });
-  const name = getReferenceName({ book, chapter, verse, endVerse, version });
+  const name = getReferenceName({ book, chapter, verse, endVerse });
   return {
     id,
     name,
@@ -78,4 +80,25 @@ export async function getBibleData(language: string): Promise<BibleData> {
 
 export async function getBibleBookMetadata(): Promise<{ [key: string]: BibleBookMetadata }> {
   return getJSONData(path.join(__dirname, "assets", "data", "bible", `book-metadata.json`));
+}
+
+export function fetchHTML(url: string): Promise<string> {
+  return fetch(url, {
+    headers: {
+      "User-Agent": "YouVersion Suggest",
+    },
+  }).then((response) => response.text());
+}
+
+export async function copyContentToClipboard(reference: BibleReference) {
+  try {
+    const referenceContent = await fetchReferenceContent(reference);
+    Clipboard.copy(referenceContent);
+    showToast({
+      style: Toast.Style.Success,
+      title: `Copied ${reference.name} (${reference.version.name}) to clipboard`,
+    });
+  } catch (error) {
+    showToast({ style: Toast.Style.Failure, title: "Could not copy to clipboard", message: String(error) });
+  }
 }

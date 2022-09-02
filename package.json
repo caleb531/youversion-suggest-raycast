@@ -20,10 +20,12 @@
   ],
   "dependencies": {
     "@raycast/api": "^1.39.1",
+    "cheerio": "^1.0.0-rc.12",
     "lodash-es": "^4.17.21",
     "node-fetch": "^3.0.0"
   },
   "devDependencies": {
+    "@types/cheerio": "^0.22.31",
     "@types/lodash-es": "^4.17.6",
     "@typescript-eslint/eslint-plugin": "^5.0.0",
     "@typescript-eslint/parser": "^5.0.0",

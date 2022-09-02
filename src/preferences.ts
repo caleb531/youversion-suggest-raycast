@@ -11,3 +11,7 @@ export async function getPreferredLanguageId(): Promise<string> {
 export async function getPreferredVersionId(): Promise<number> {
   return (await getPreferenceValue<number>("yvs-version")) || 111;
 }
+
+export async function getPreferredReferenceFormat(): Promise<string> {
+  return (await getPreferenceValue<string>("yvs-refformat")) || "{name} ({version})\n\n{content}";
+}

@@ -13,6 +13,7 @@ import {
 } from "./types";
 import {
   buildReference,
+  copyContentToClipboard,
   getBibleBookMetadata,
   getBibleData,
   normalizeSearchText as coreNormalizeSearchText,
@@ -39,10 +40,16 @@ export default function Command() {
 function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
   return (
     <List.Item
-      title={searchResult.name}
+      title={`${searchResult.name} (${searchResult.version.name})`}
       actions={
         <ActionPanel>
           <Action.OpenInBrowser title="View on YouVersion" url={searchResult.url} />
+          <Action
+            title="Copy content to clipboard"
+            onAction={() => {
+              copyContentToClipboard(searchResult);
+            }}
+          />
         </ActionPanel>
       }
     />
