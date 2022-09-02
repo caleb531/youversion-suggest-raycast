@@ -54,4 +54,5 @@ export interface BibleReference {
   verse: number | null;
   endVerse: number | null;
   version: BibleVersion;
+  content?: string;
 }

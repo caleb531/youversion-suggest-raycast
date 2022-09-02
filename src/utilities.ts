@@ -49,7 +49,16 @@ export function getReferenceName({
 
 export const baseReferenceUrl = "https://www.bible.com/bible";
 
-export function buildReference({
+export function getReferenceIDFromURL(url: string): string {
+  const matches = url?.trim().match(/(\d+\/(?:[^/]+))$/);
+  if (matches) {
+    return matches[1];
+  } else {
+    return "";
+  }
+}
+
+export function buildBibleReference({
   book,
   chapter,
   verse,
@@ -68,6 +77,33 @@ export function buildReference({
     endVerse,
     version,
   };
+}
+
+export function buildBibleReferenceFromID(id: string, bible: BibleData): BibleReference | null {
+  const matches = id.match(/^(\d+)\/([a-z0-9]{3})\.(\d+)(?:\.(\d+)(?:-(\d+))?)?$/i);
+  if (matches) {
+    const versionId = Number(matches[1]);
+    const bookId = matches[2];
+    const chapter = Number(matches[3]);
+    const verse = Number(matches[4]) || null;
+    const endVerse = Number(matches[5]) || null;
+    return buildBibleReference({
+      book: bible.books.find((book) => book.id === bookId) || {
+        id: "",
+        name: "",
+      },
+      chapter: chapter,
+      verse: verse ? verse : null,
+      endVerse: endVerse ? endVerse : null,
+      version: bible.versions.find((version) => version.id === versionId) || {
+        id: 0,
+        name: "",
+        full_name: "",
+      },
+    });
+  } else {
+    return null;
+  }
 }
 
 export async function getJSONData<T extends JSONSerializable>(path: string): Promise<T> {

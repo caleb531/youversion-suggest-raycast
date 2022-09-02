@@ -12,7 +12,7 @@ import {
   BibleVersionId,
 } from "./types";
 import {
-  buildReference,
+  buildBibleReference,
   copyContentToClipboard,
   getBibleBookMetadata,
   getBibleData,
@@ -212,7 +212,7 @@ function getSearchResult(book: BibleBookMatch, searchParams: SearchParams, chose
   const chapter = Math.min(searchParams.chapter, book.metadata.chapters);
   const lastVerse = book.metadata.verses[chapter - 1];
 
-  return buildReference({
+  return buildBibleReference({
     book: book,
     chapter,
     verse: searchParams.verse ? Math.min(searchParams.verse, lastVerse) : null,
