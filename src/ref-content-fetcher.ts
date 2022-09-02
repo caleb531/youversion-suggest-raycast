@@ -88,7 +88,7 @@ export function isVerseWithinRange(reference: BibleReference, $: cheerio.Root, $
   if (reference.verse && reference.endVerse) {
     return verseNum >= reference.verse && verseNum <= reference.endVerse;
   } else if (reference.verse) {
-    return verseNum >= reference.verse;
+    return verseNum === reference.verse;
   } else {
     return true;
   }
