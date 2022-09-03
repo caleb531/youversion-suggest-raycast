@@ -16,6 +16,13 @@
       "subtitle": "Type the name of a chapter, verse, or range of verses",
       "description": "Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference",
       "mode": "view"
+    },
+    {
+      "name": "search",
+      "title": "Search the Bible by Phrase",
+      "subtitle": "Type a word or phrase to search the Bible for",
+      "description": "Allows you to find Bible verses related to a particular phrase or topic",
+      "mode": "view"
     }
   ],
   "dependencies": {
