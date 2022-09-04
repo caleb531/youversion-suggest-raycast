@@ -25,7 +25,7 @@ export async function applyReferenceFormat(reference: BibleReference, content: s
 export async function fetchReferenceContent(reference: BibleReference) {
   const html = await fetchHTML(getChapterURL(reference));
   const content = parseContentFromHTML(reference, html);
-  if (content !== "") {
+  if (content) {
     return applyReferenceFormat(reference, content);
   } else {
     throw new Error("Fetched reference content is empty");
