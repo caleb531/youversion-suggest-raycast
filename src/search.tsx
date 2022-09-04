@@ -1,8 +1,8 @@
 import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useState } from "react";
-import { getPreferredLanguageId } from "./preferences";
-import { BibleBook, BibleBookId, BibleBookMetadata, BibleReference, BibleVersion } from "./types";
-import { buildBibleReference, copyContentToClipboard, getBibleData, normalizeSearchText } from "./utilities";
+import { searchBibleForPhrase } from "./search-result-fetcher";
+import { BibleReference } from "./types";
+import { copyContentToClipboard, normalizeSearchText } from "./utilities";
 
 export default function Command() {
   const { state, search } = useSearch();
@@ -11,7 +11,7 @@ export default function Command() {
     <List
       isLoading={state.isLoading}
       onSearchTextChange={search}
-      searchBarPlaceholder="Type the name of a chapter, verse, or range or verses..."
+      searchBarPlaceholder="Type a word or phrase to search the Bible for..."
       throttle
     >
       <List.Section title="Results" subtitle={state.results.length + ""}>
@@ -27,6 +27,7 @@ function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
   return (
     <List.Item
       title={`${searchResult.name} (${searchResult.version.name})`}
+      subtitle={searchResult.content}
       actions={
         <ActionPanel>
           <Action.OpenInBrowser title="View on YouVersion" url={searchResult.url} />
@@ -81,42 +82,17 @@ function useSearch() {
   };
 }
 
-function getSearchResult(book: BibleBookMatch, searchParams: SearchParams, chosenVersion: BibleVersion) {
-  const chapter = Math.min(searchParams.chapter, book.metadata.chapters);
-  const lastVerse = book.metadata.verses[chapter - 1];
-
-  return buildBibleReference({
-    book: book,
-    chapter,
-    verse: searchParams.verse ? Math.min(searchParams.verse, lastVerse) : null,
-    endVerse: searchParams.endVerse ? Math.min(searchParams.endVerse, lastVerse) : null,
-    version: chosenVersion,
-  });
-}
-
 async function getSearchResults(searchText: string): Promise<BibleReference[]> {
   searchText = normalizeSearchText(searchText);
-  const searchParams = getSearchParams(searchText);
-  if (!searchParams) {
+  // Do not call out to YouVersion's servers if the search text is empty
+  if (searchText.trim()) {
+    return searchBibleForPhrase(searchText);
+  } else {
     return [];
   }
-  const bible = await getBibleData(await getPreferredLanguageId());
-  return [];
-}
-
-interface BibleBookMatch extends BibleBook {
-  priority: number;
-  metadata: BibleBookMetadata;
 }
 
 interface SearchState {
   results: BibleReference[];
   isLoading: boolean;
-}
-interface SearchParams {
-  book: BibleBookId;
-  chapter: number;
-  verse: number | null;
-  endVerse: number | null;
-  version: string | null;
 }
