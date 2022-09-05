@@ -3,7 +3,7 @@ import fsPromises from "fs/promises";
 import fetch from "node-fetch";
 import path from "path";
 import { fetchReferenceContent } from "./ref-content-fetcher";
-import { BibleBookMetadata, BibleData, BibleReference, JSONSerializable } from "./types";
+import { BibleBookMetadata, BibleData, BibleLanguage, BibleReference, JSONSerializable } from "./types";
 
 export function normalizeSearchText(searchText: string): string {
   searchText = searchText.toLowerCase();
@@ -113,6 +113,10 @@ export async function getBibleData(language: string): Promise<BibleData> {
 
 export async function getBibleBookMetadata(): Promise<{ [key: string]: BibleBookMetadata }> {
   return getJSONData(path.join(__dirname, "assets", "data", "bible", `book-metadata.json`));
+}
+
+export async function getLanguages(): Promise<BibleLanguage[]> {
+  return getJSONData(path.join(__dirname, "assets", "data", "bible", `languages.json`));
 }
 
 export function fetchHTML(url: string): Promise<string> {

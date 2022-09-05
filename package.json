@@ -23,6 +23,13 @@
       "subtitle": "Type a word or phrase to search the Bible for",
       "description": "Allows you to find Bible verses related to a particular phrase or topic",
       "mode": "view"
+    },
+    {
+      "name": "set-preferences",
+      "title": "Set Bible Preferences",
+      "subtitle": "Set your preferred language, version, and more for YouVersion Suggest",
+      "description": "Allows you to set your preferred language, version, and more",
+      "mode": "view"
     }
   ],
   "dependencies": {

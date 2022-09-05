@@ -1,7 +1,7 @@
 import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
 import { sortBy } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
-import { getPreferredLanguageId, getPreferredVersionId } from "./preferences";
+import { getPreferredLanguage, getPreferredVersion } from "./preferences";
 import {
   BibleBook,
   BibleBookId,
@@ -171,11 +171,11 @@ function chooseBestVersion(
   searchParams: SearchParams
 ): BibleVersion {
   if (searchParams.version) {
-    return guessVersion(bible.versions, searchParams.version) || bible.default_version;
+    return guessVersion(bible.versions, searchParams.version) || bible.versions[0];
   } else if (preferredVersionId) {
-    return bible.versions.find((version) => version.id === preferredVersionId) || bible.default_version;
+    return bible.versions.find((version) => version.id === preferredVersionId) || bible.versions[0];
   }
-  return bible.default_version;
+  return bible.versions[0];
 }
 
 function splitBookNameIntoParts(bookName: string) {
@@ -227,9 +227,9 @@ async function getSearchResults(searchText: string): Promise<BibleReference[]> {
   if (!searchParams) {
     return [];
   }
-  const bible = await getBibleData(await getPreferredLanguageId());
+  const bible = await getBibleData(await getPreferredLanguage());
 
-  const chosenVersion = chooseBestVersion(await getPreferredVersionId(), bible, searchParams);
+  const chosenVersion = chooseBestVersion(await getPreferredVersion(), bible, searchParams);
 
   return (await getMatchingBooks(bible.books, searchParams)).map((bibleBook) => {
     return getSearchResult(bibleBook, searchParams, chosenVersion);

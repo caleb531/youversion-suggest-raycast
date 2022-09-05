@@ -35,7 +35,7 @@ export interface BibleLanguage {
 export interface BibleData {
   books: BibleBook[];
   versions: BibleVersion[];
-  default_version: BibleVersion;
+  default_version: BibleVersionId;
   language: BibleLanguage;
 }
 
