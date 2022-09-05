@@ -1,34 +1,24 @@
 import { Form } from "@raycast/api";
-import { useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { getPreferredLanguage, getPreferredVersion, setPreferredLanguage, setPreferredVersion } from "./preferences";
 import { BibleLanguage, BibleLanguageId, BibleVersion, BibleVersionId } from "./types";
 import { getBibleData, getLanguages } from "./utilities";
 
 export default function Command() {
-  const { state } = usePreferences();
+  const { state, onChangeLanguage, onChangeVersion } = usePreferences();
 
   return (
     <Form isLoading={state.isLoading}>
-      {state.preferences?.language?.currentValue ? (
-        <Form.Dropdown
-          id="language"
-          title="Language"
-          defaultValue={state.preferences.language.currentValue}
-          onChange={(newValue) => setPreferredLanguage(newValue)}
-        >
-          {state.preferences.language.options.map((language) => {
+      {state.currentLanguage ? (
+        <Form.Dropdown id="language" title="Language" value={state.currentLanguage} onChange={onChangeLanguage}>
+          {state.languageOptions.map((language) => {
             return <Form.Dropdown.Item key={language.id} value={language.id} title={language.name} />;
           })}
         </Form.Dropdown>
       ) : null}
-      {state.preferences?.version?.currentValue ? (
-        <Form.Dropdown
-          id="version"
-          title="Version"
-          defaultValue={String(state.preferences.version.currentValue)}
-          onChange={(newValue) => setPreferredVersion(Number(newValue))}
-        >
-          {state.preferences.version.options.map((version) => {
+      {state.currentVersion ? (
+        <Form.Dropdown id="version" title="Version" value={String(state.currentVersion)} onChange={onChangeVersion}>
+          {state.versionOptions.map((version) => {
             return <Form.Dropdown.Item key={String(version.id)} value={String(version.id)} title={version.name} />;
           })}
         </Form.Dropdown>
@@ -40,17 +30,31 @@ export default function Command() {
 function usePreferences() {
   const [state, setState] = useState<FormState>({
     isLoading: true,
-    preferences: {
-      language: { options: [], currentValue: undefined },
-      version: { options: [], currentValue: undefined },
-    },
+    languageOptions: [],
+    currentLanguage: undefined,
+    versionOptions: [],
+    currentVersion: undefined,
   });
 
-  getPreferenceFormData().then((preferences) => {
-    setState({ isLoading: false, preferences });
-  });
+  useEffect(() => {
+    getPreferenceFormData().then((newState) => {
+      setState({ isLoading: false, ...newState });
+    });
+  }, []);
 
-  return { state };
+  const onChangeLanguage = useCallback(async (newValue: string) => {
+    await setPreferredLanguage(newValue);
+    const newState = await getPreferenceFormData();
+    setState({ isLoading: false, ...newState });
+  }, []);
+
+  const onChangeVersion = useCallback(async (newValue: string) => {
+    await setPreferredVersion(Number(newValue));
+    const newState = await getPreferenceFormData();
+    setState({ isLoading: false, ...newState });
+  }, []);
+
+  return { state, onChangeLanguage, onChangeVersion };
 }
 
 async function getPreferenceFormData() {
@@ -60,29 +64,17 @@ async function getPreferenceFormData() {
   const bible = await getBibleData(preferredLanguageId);
 
   return {
-    language: {
-      options: languages,
-      currentValue: preferredLanguageId,
-    },
-    version: {
-      options: bible.versions,
-      currentValue: preferredVersionId,
-    },
+    languageOptions: languages,
+    currentLanguage: preferredLanguageId,
+    versionOptions: bible.versions,
+    currentVersion: preferredVersionId,
   };
 }
 
 interface FormState {
   isLoading: boolean;
-  preferences: Preferences;
-}
-
-interface Preferences {
-  language: {
-    options: BibleLanguage[];
-    currentValue: BibleLanguageId | undefined;
-  };
-  version: {
-    options: BibleVersion[];
-    currentValue: BibleVersionId | undefined;
-  };
+  languageOptions: BibleLanguage[];
+  currentLanguage: BibleLanguageId | undefined;
+  versionOptions: BibleVersion[];
+  currentVersion: BibleVersionId | undefined;
 }
