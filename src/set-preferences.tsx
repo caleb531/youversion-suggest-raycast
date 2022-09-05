@@ -13,11 +13,11 @@ export default function Command() {
         <Form.Dropdown
           id="language"
           title="Language"
-          defaultValue={`language-${state.preferences.language.currentValue}`}
-          onChange={(newValue) => setPreferredLanguage(getValueFromKey(newValue))}
+          defaultValue={state.preferences.language.currentValue}
+          onChange={(newValue) => setPreferredLanguage(newValue)}
         >
           {state.preferences.language.options.map((language) => {
-            return <Form.Dropdown.Item value={`language-${language.id}`} title={language.name} />;
+            return <Form.Dropdown.Item key={language.id} value={language.id} title={language.name} />;
           })}
         </Form.Dropdown>
       ) : null}
@@ -25,11 +25,11 @@ export default function Command() {
         <Form.Dropdown
           id="version"
           title="Version"
-          defaultValue={`version-${String(state.preferences.version.currentValue)}`}
-          onChange={(newValue) => setPreferredVersion(Number(getValueFromKey(newValue)))}
+          defaultValue={String(state.preferences.version.currentValue)}
+          onChange={(newValue) => setPreferredVersion(Number(newValue))}
         >
           {state.preferences.version.options.map((version) => {
-            return <Form.Dropdown.Item value={`version-${String(version.id)}`} title={version.name} />;
+            return <Form.Dropdown.Item key={String(version.id)} value={String(version.id)} title={version.name} />;
           })}
         </Form.Dropdown>
       ) : null}
@@ -69,12 +69,6 @@ async function getPreferenceFormData() {
       currentValue: preferredVersionId,
     },
   };
-}
-
-// Take a key like 'language-eng' and extract the ID at the end (i.e.
-// the 'eng' part)
-function getValueFromKey(key: string): string {
-  return key.split("-")[1];
 }
 
 interface FormState {
