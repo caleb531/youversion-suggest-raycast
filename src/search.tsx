@@ -1,8 +1,9 @@
-import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
+import { List, showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useState } from "react";
+import ReferenceActions from "./reference-actions";
 import { searchBibleForPhrase } from "./search-result-fetcher";
 import { BibleReference } from "./types";
-import { copyContentToClipboard, normalizeSearchText } from "./utilities";
+import { normalizeSearchText } from "./utilities";
 
 export default function Command() {
   const { state, search } = useSearch();
@@ -28,17 +29,7 @@ function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
     <List.Item
       title={`${searchResult.name} (${searchResult.version.name})`}
       subtitle={searchResult.content}
-      actions={
-        <ActionPanel>
-          <Action.OpenInBrowser title="View on YouVersion" url={searchResult.url} />
-          <Action
-            title="Copy content to clipboard"
-            onAction={() => {
-              copyContentToClipboard(searchResult);
-            }}
-          />
-        </ActionPanel>
-      }
+      actions={<ReferenceActions searchResult={searchResult} />}
     />
   );
 }

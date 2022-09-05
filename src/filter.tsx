@@ -1,7 +1,8 @@
-import { Action, ActionPanel, List, showToast, Toast } from "@raycast/api";
+import { List, showToast, Toast } from "@raycast/api";
 import { sortBy } from "lodash-es";
 import { useCallback, useEffect, useState } from "react";
 import { getPreferredLanguage, getPreferredVersion } from "./preferences";
+import ReferenceActions from "./reference-actions";
 import {
   BibleBook,
   BibleBookId,
@@ -13,7 +14,6 @@ import {
 } from "./types";
 import {
   buildBibleReference,
-  copyContentToClipboard,
   getBibleBookMetadata,
   getBibleData,
   normalizeSearchText as coreNormalizeSearchText,
@@ -41,17 +41,7 @@ function SearchListItem({ searchResult }: { searchResult: BibleReference }) {
   return (
     <List.Item
       title={`${searchResult.name} (${searchResult.version.name})`}
-      actions={
-        <ActionPanel>
-          <Action.OpenInBrowser title="View on YouVersion" url={searchResult.url} />
-          <Action
-            title="Copy content to clipboard"
-            onAction={() => {
-              copyContentToClipboard(searchResult);
-            }}
-          />
-        </ActionPanel>
-      }
+      actions={<ReferenceActions searchResult={searchResult} />}
     />
   );
 }
