@@ -15,12 +15,17 @@ export async function getPreferredLanguage(): Promise<string> {
 
 export async function setPreferredLanguage(newLanguageId: string): Promise<void> {
   await setPreferenceValue<string>("yvs-language", newLanguageId);
-  const bible = await getBibleData(newLanguageId);
-  return setPreferenceValue<number>("yvs-version", bible.default_version);
+  // When the language changes, the version must also change to the default
+  // version; that logic is baked into getPreferredVersion(), so we can simply
+  // persist the latest return value of that function
+  return setPreferenceValue<number>("yvs-version", await getPreferredVersion());
 }
 
 export async function getPreferredVersion(): Promise<number> {
-  return (await getPreferenceValue<number>("yvs-version")) || 111;
+  const preferredLanguageId = await getPreferredLanguage();
+  const bible = await getBibleData(preferredLanguageId);
+  const preferredVersionId = await getPreferenceValue<number>("yvs-version");
+  return bible.versions.find((version) => version.id === preferredVersionId)?.id || bible.default_version;
 }
 
 export async function setPreferredVersion(newVersionId: number): Promise<void> {
