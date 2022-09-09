@@ -3,8 +3,10 @@
 _Copyright 2022 Caleb Evans_  
 _Released under the MIT license_
 
-This Raycast extension allows you to search the YouVersion Bible quickly and
-easily.
+This [Raycast][raycast] extension allows you to search the YouVersion Bible
+quickly and easily.
+
+[raycast]: https://www.raycast.com/
 
 This extension is still in development, so things may break at any time.
 
