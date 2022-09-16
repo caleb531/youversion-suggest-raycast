@@ -8,8 +8,6 @@ quickly and easily.
 
 [raycast]: https://www.raycast.com/
 
-This extension is still in development, so things may break at any time.
-
 ## Commands
 
 ### Filter Bible Reference
