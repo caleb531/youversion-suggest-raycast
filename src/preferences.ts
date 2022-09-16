@@ -1,4 +1,5 @@
 import { LocalStorage } from "@raycast/api";
+import defaultPreferences from "./default-preferences.json";
 import { getBibleData } from "./utilities";
 
 export async function getPreferenceValue<T extends LocalStorage.Value>(id: string): Promise<T | undefined> {
@@ -10,7 +11,7 @@ export async function setPreferenceValue<T extends LocalStorage.Value>(id: strin
 }
 
 export async function getPreferredLanguage(): Promise<string> {
-  return (await getPreferenceValue<string>("yvs-language")) || "eng";
+  return (await getPreferenceValue<string>("yvs-language")) || defaultPreferences.language;
 }
 
 export async function setPreferredLanguage(newLanguageId: string): Promise<void> {
@@ -33,5 +34,5 @@ export async function setPreferredVersion(newVersionId: number): Promise<void> {
 }
 
 export async function getPreferredReferenceFormat(): Promise<string> {
-  return (await getPreferenceValue<string>("yvs-refformat")) || "{name} ({version})\n\n{content}";
+  return (await getPreferenceValue<string>("yvs-refformat")) || defaultPreferences.refformat;
 }
