@@ -23,3 +23,9 @@ Allows you to find Bible verses related to a particular phrase or topic
 ### Set Bible Preferences
 
 Allows you to set your preferred language, version/translation, and more
+
+## Disclaimer
+
+This project is not affiliated with YouVersion, and all Bible content is
+copyright of the respective publishers. The Bible app icon used in this
+extension is property of YouVersion.
