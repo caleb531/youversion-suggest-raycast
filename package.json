@@ -37,7 +37,7 @@
     "@raycast/api": "^1.39.3",
     "cheerio": "^1.0.0-rc.12",
     "lodash-es": "^4.17.21",
-    "node-fetch": "^3.0.0"
+    "node-fetch": "^3.2.10"
   },
   "devDependencies": {
     "@types/cheerio": "^0.22.31",
