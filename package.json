@@ -3,6 +3,7 @@
   "name": "youversion-suggest-raycast",
   "title": "YouVersion Bible Suggest",
   "description": "A Raycast extension for searching the YouVersion Bible quickly and easily",
+  "version": "0.1.0",
   "icon": "command-icon.png",
   "author": "caleb531",
   "categories": [
