@@ -1,4 +1,4 @@
-import { Action, ActionPanel } from "@raycast/api";
+import { Action, ActionPanel, Icon } from "@raycast/api";
 import { BibleReference } from "./types";
 import { copyContentToClipboard } from "./utilities";
 
@@ -11,6 +11,7 @@ function ReferenceActions({ searchResult }: { searchResult: BibleReference }) {
         onAction={() => {
           copyContentToClipboard(searchResult);
         }}
+        icon={Icon.Clipboard}
       />
     </ActionPanel>
   );
