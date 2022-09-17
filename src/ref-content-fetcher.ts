@@ -21,6 +21,14 @@ export async function applyReferenceFormat(reference: BibleReference, content: s
     .replace(/{content}/gi, content);
 }
 
+export async function isReferenceFormatValid(newFormat: string): Promise<boolean> {
+  const evaluatedFormat = newFormat
+    .replace(/{name}/gi, "John 11:35")
+    .replace(/{version}/gi, "NIV")
+    .replace(/{content}/gi, "Jesus wept.");
+  return !(evaluatedFormat.includes("{") || evaluatedFormat.includes("}"));
+}
+
 // Fetch the textual content of the given Bible reference; returns a promise
 export async function fetchReferenceContent(reference: BibleReference) {
   const html = await fetchHTML(getChapterURL(reference));

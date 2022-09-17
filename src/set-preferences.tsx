@@ -8,11 +8,23 @@ import {
   setPreferredReferenceFormat,
   setPreferredVersion,
 } from "./preferences";
+import { isReferenceFormatValid } from "./ref-content-fetcher";
 import { BibleLanguage, BibleLanguageId, BibleVersion, BibleVersionId } from "./types";
 import { getBibleData, getLanguages } from "./utilities";
 
 export default function Command() {
   const { state, onChangeLanguage, onChangeVersion, onChangeReferenceFormat } = usePreferences();
+
+  const [referenceFormatError, setReferenceFormatError] = useState<string | undefined>();
+
+  async function validateReferenceFormat(newFormat: string): Promise<void> {
+    const isValid = await isReferenceFormatValid(newFormat);
+    if (isValid) {
+      setReferenceFormatError(undefined);
+    } else {
+      setReferenceFormatError("Format is invalid; see field info for proper usage");
+    }
+  }
 
   return (
     <Form isLoading={state.isLoading}>
@@ -46,12 +58,18 @@ export default function Command() {
         <Form.TextArea
           id="refformat"
           title="Reference Format"
-          info="The format used for copied Bible content, e.g.
+          info="The format used for copied Bible content; blank lines are allowed, e.g.
 
 {name} ({version})
 {content}"
+          placeholder="e.g. {name} ({version})
+{content}"
+          error={referenceFormatError}
           value={state.currentReferenceFormat}
-          onChange={onChangeReferenceFormat}
+          onChange={(newValue) => {
+            validateReferenceFormat(newValue);
+            onChangeReferenceFormat(newValue);
+          }}
         />
       ) : null}
     </Form>
