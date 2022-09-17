@@ -12,14 +12,14 @@
   "license": "MIT",
   "commands": [
     {
-      "name": "filter",
-      "title": "Filter Bible Reference",
+      "name": "lookup-reference",
+      "title": "Lookup Bible Reference by Name",
       "subtitle": "Jump to a particular Bible verse or chapter",
       "description": "Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference",
       "mode": "view"
     },
     {
-      "name": "search",
+      "name": "search-bible",
       "title": "Search the Bible by Phrase",
       "subtitle": "Search for Bible verses containing a word or phrase",
       "description": "Allows you to find Bible verses related to a particular phrase or topic",
