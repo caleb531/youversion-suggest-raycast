@@ -6,7 +6,7 @@ _Released under the MIT license_
 This [Raycast][raycast] extension allows you to search the YouVersion Bible
 quickly and easily. You can:
 
-- Jump to a specific verse or chapter
+- Look up a specific verse or chapter by name
 - Search for Bible verses matching a specific phrase
 - Copy any verse contents to the clipboard.
 - Choose an alternate language (other than English) and/or pick your preferred

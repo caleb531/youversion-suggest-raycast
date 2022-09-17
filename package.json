@@ -13,7 +13,7 @@
   "commands": [
     {
       "name": "lookup-reference",
-      "title": "Lookup Bible Reference by Name",
+      "title": "Look Up Bible Reference by Name",
       "subtitle": "Jump to a particular Bible verse or chapter",
       "description": "Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference",
       "mode": "view"
