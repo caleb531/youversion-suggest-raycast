@@ -4,7 +4,13 @@ _Copyright 2022 Caleb Evans_
 _Released under the MIT license_
 
 This [Raycast][raycast] extension allows you to search the YouVersion Bible
-quickly and easily.
+quickly and easily. You can:
+
+- Jump to a specific verse or chapter
+- Search for Bible verses matching a specific phrase
+- Copy any verse contents to the clipboard.
+- Choose an alternate language (other than English) and/or pick your preferred
+  version/translation (e.g. ESV, NKJV)
 
 [raycast]: https://www.raycast.com/
 
