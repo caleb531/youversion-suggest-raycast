@@ -1,5 +1,5 @@
 import cheerio from "cheerio";
-import { getPreferredReferenceFormat } from "./preferences";
+import { getDefaultReferenceFormat, getPreferredReferenceFormat } from "./preferences";
 import { BibleReference } from "./types";
 import { baseReferenceUrl, fetchHTML } from "./utilities";
 
@@ -14,7 +14,7 @@ export function getChapterURL(reference: BibleReference) {
 }
 
 export async function applyReferenceFormat(reference: BibleReference, content: string) {
-  const referenceFormat = await getPreferredReferenceFormat();
+  const referenceFormat = (await getPreferredReferenceFormat()) || (await getDefaultReferenceFormat());
   return referenceFormat
     .replace(/{name}/gi, reference.name)
     .replace(/{version}/gi, reference.version.name)

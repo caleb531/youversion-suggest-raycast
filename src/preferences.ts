@@ -33,6 +33,18 @@ export async function setPreferredVersion(newVersionId: number): Promise<void> {
   return setPreferenceValue<number>("yvs-version", newVersionId);
 }
 
+export async function getDefaultReferenceFormat(): Promise<string> {
+  return defaultPreferences.refformat;
+}
+
 export async function getPreferredReferenceFormat(): Promise<string> {
-  return (await getPreferenceValue<string>("yvs-refformat")) || defaultPreferences.refformat;
+  // Because the field in the Preferences UI is a controlled input that is also
+  // free-form, we must be able to allow empty values for this preference so
+  // that the user is able to enter an empty value (even though an empty value
+  // is technically invalid)
+  return (await getPreferenceValue<string>("yvs-refformat")) || "";
+}
+
+export async function setPreferredReferenceFormat(newReferenceFormat: string): Promise<void> {
+  await setPreferenceValue<string>("yvs-refformat", newReferenceFormat);
 }

@@ -1,11 +1,18 @@
 import { Form } from "@raycast/api";
 import { useCallback, useEffect, useState } from "react";
-import { getPreferredLanguage, getPreferredVersion, setPreferredLanguage, setPreferredVersion } from "./preferences";
+import {
+  getPreferredLanguage,
+  getPreferredReferenceFormat,
+  getPreferredVersion,
+  setPreferredLanguage,
+  setPreferredReferenceFormat,
+  setPreferredVersion,
+} from "./preferences";
 import { BibleLanguage, BibleLanguageId, BibleVersion, BibleVersionId } from "./types";
 import { getBibleData, getLanguages } from "./utilities";
 
 export default function Command() {
-  const { state, onChangeLanguage, onChangeVersion } = usePreferences();
+  const { state, onChangeLanguage, onChangeVersion, onChangeReferenceFormat } = usePreferences();
 
   return (
     <Form isLoading={state.isLoading}>
@@ -23,6 +30,18 @@ export default function Command() {
           })}
         </Form.Dropdown>
       ) : null}
+      {state.currentReferenceFormat !== undefined ? (
+        <Form.TextArea
+          id="refformat"
+          title="Reference Format"
+          info="The format used for copied Bible content, e.g.
+
+{name} ({version})
+{content}"
+          value={state.currentReferenceFormat}
+          onChange={onChangeReferenceFormat}
+        />
+      ) : null}
     </Form>
   );
 }
@@ -34,6 +53,7 @@ function usePreferences() {
     currentLanguage: undefined,
     versionOptions: [],
     currentVersion: undefined,
+    currentReferenceFormat: undefined,
   });
 
   useEffect(() => {
@@ -54,7 +74,13 @@ function usePreferences() {
     setState({ isLoading: false, ...newState });
   }, []);
 
-  return { state, onChangeLanguage, onChangeVersion };
+  const onChangeReferenceFormat = useCallback(async (newValue: string) => {
+    await setPreferredReferenceFormat(newValue);
+    const newState = await getPreferenceFormData();
+    setState({ isLoading: false, ...newState });
+  }, []);
+
+  return { state, onChangeLanguage, onChangeVersion, onChangeReferenceFormat };
 }
 
 async function getPreferenceFormData() {
@@ -62,12 +88,14 @@ async function getPreferenceFormData() {
   const preferredLanguageId = await getPreferredLanguage();
   const preferredVersionId = await getPreferredVersion();
   const bible = await getBibleData(preferredLanguageId);
+  const preferredReferenceFormat = await getPreferredReferenceFormat();
 
   return {
     languageOptions: languages,
     currentLanguage: preferredLanguageId,
     versionOptions: bible.versions,
     currentVersion: preferredVersionId,
+    currentReferenceFormat: preferredReferenceFormat,
   };
 }
 
@@ -77,4 +105,5 @@ interface FormState {
   currentLanguage: BibleLanguageId | undefined;
   versionOptions: BibleVersion[];
   currentVersion: BibleVersionId | undefined;
+  currentReferenceFormat: string | undefined;
 }
