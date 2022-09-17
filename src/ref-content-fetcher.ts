@@ -21,7 +21,7 @@ export async function applyReferenceFormat(reference: BibleReference, content: s
     .replace(/{content}/gi, content);
 }
 
-export async function isReferenceFormatValid(newFormat: string): Promise<boolean> {
+export function isReferenceFormatValid(newFormat: string): boolean {
   const evaluatedFormat = newFormat
     .replace(/{name}/gi, "John 11:35")
     .replace(/{version}/gi, "NIV")

@@ -18,8 +18,7 @@ export default function Command() {
   const [referenceFormatError, setReferenceFormatError] = useState<string | undefined>();
 
   async function validateReferenceFormat(newFormat: string): Promise<void> {
-    const isValid = await isReferenceFormatValid(newFormat);
-    if (isValid) {
+    if (isReferenceFormatValid(newFormat)) {
       setReferenceFormatError(undefined);
     } else {
       setReferenceFormatError("Format is invalid; see field info for proper usage");
