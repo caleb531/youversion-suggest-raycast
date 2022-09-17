@@ -8,12 +8,12 @@ export const blockElems = new Set(["b", "p", "m"]);
 // Elements that should trigger a single line break
 export const breakElems = new Set(["li1", "q1", "q2", "qc"]);
 
-export function getChapterURL(reference: BibleReference) {
+export function getChapterURL(reference: BibleReference): string {
   const { version, book, chapter } = reference;
   return `${baseReferenceUrl}/${version.id}/${book.id.toUpperCase()}.${chapter}`;
 }
 
-export async function applyReferenceFormat(reference: BibleReference, content: string) {
+export async function applyReferenceFormat(reference: BibleReference, content: string): Promise<string> {
   const referenceFormat = (await getPreferredReferenceFormat()) || (await getDefaultReferenceFormat());
   return referenceFormat
     .replace(/{name}/gi, reference.name)
@@ -30,7 +30,7 @@ export async function isReferenceFormatValid(newFormat: string): Promise<boolean
 }
 
 // Fetch the textual content of the given Bible reference; returns a promise
-export async function fetchReferenceContent(reference: BibleReference) {
+export async function fetchReferenceContent(reference: BibleReference): Promise<string> {
   const html = await fetchHTML(getChapterURL(reference));
   const content = parseContentFromHTML(reference, html);
   if (content) {
@@ -55,7 +55,11 @@ export function parseContentFromHTML(reference: BibleReference, html: string): s
 
 // Determine the appropriate amount of spacing (e.g. line/paragraph breaks) to
 // insert before the given section of content
-export function getSpacingBeforeSection(_reference: BibleReference, $: cheerio.Root, $section: cheerio.Cheerio) {
+export function getSpacingBeforeSection(
+  _reference: BibleReference,
+  $: cheerio.Root,
+  $section: cheerio.Cheerio
+): string {
   const sectionType = $section.prop("class");
   if (blockElems.has(sectionType)) {
     return "\n\n";
