@@ -17,14 +17,26 @@ export default function Command() {
   return (
     <Form isLoading={state.isLoading}>
       {state.currentLanguage ? (
-        <Form.Dropdown id="language" title="Language" value={state.currentLanguage} onChange={onChangeLanguage}>
+        <Form.Dropdown
+          id="language"
+          title="Language"
+          info="The language to use for Bible references and their content"
+          value={state.currentLanguage}
+          onChange={onChangeLanguage}
+        >
           {state.languageOptions.map((language) => {
             return <Form.Dropdown.Item key={language.id} value={language.id} title={language.name} />;
           })}
         </Form.Dropdown>
       ) : null}
       {state.currentVersion ? (
-        <Form.Dropdown id="version" title="Version" value={String(state.currentVersion)} onChange={onChangeVersion}>
+        <Form.Dropdown
+          id="version"
+          title="Version"
+          info="The version/translation to use for Bible references and their content; this list is different depending on your selected language"
+          value={String(state.currentVersion)}
+          onChange={onChangeVersion}
+        >
           {state.versionOptions.map((version) => {
             return <Form.Dropdown.Item key={String(version.id)} value={String(version.id)} title={version.name} />;
           })}
