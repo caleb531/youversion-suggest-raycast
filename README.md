@@ -8,6 +8,9 @@ quickly and easily.
 
 [raycast]: https://www.raycast.com/
 
+![Filter Bible Reference](screenshot-filter.png)
+![Search the Bible by Phrase](screenshot-search.png)
+
 ## Commands
 
 ### Filter Bible Reference
