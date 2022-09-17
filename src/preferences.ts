@@ -42,7 +42,14 @@ export async function getPreferredReferenceFormat(): Promise<string> {
   // free-form, we must be able to allow empty values for this preference so
   // that the user is able to enter an empty value (even though an empty value
   // is technically invalid)
-  return (await getPreferenceValue<string>("yvs-refformat")) || "";
+  const referenceFormat = await getPreferenceValue<string>("yvs-refformat");
+  if (referenceFormat === undefined) {
+    return defaultPreferences.refformat;
+  } else if (referenceFormat) {
+    return referenceFormat;
+  } else {
+    return "";
+  }
 }
 
 export async function setPreferredReferenceFormat(newReferenceFormat: string): Promise<void> {
