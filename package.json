@@ -29,7 +29,7 @@
       "name": "set-preferences",
       "title": "Set Bible Preferences",
       "subtitle": "Set your preferred language, version, and more used for Bible searches",
-      "description": "Allows you to set your preferred language, version, and more",
+      "description": "Allows you to set your preferred language, version, and more used for Bible searches",
       "mode": "view"
     }
   ],
