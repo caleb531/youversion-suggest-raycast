@@ -21,7 +21,8 @@ quickly and easily. You can:
 
 ### Filter Bible Reference
 
-Allows you to quickly jump to a particular Bible chapter, verse, or range of verses just by typing the name of that Bible reference
+Allows you to quickly jump to a particular Bible chapter, verse, or range of
+verses just by typing the name of that Bible reference.
 
 ### Search the Bible by Phrase
 
@@ -29,7 +30,46 @@ Allows you to find Bible verses related to a particular phrase or topic
 
 ### Set Bible Preferences
 
-Allows you to set your preferred language, version/translation, and more
+Allows you to set your preferred language, version/translation, and more.
+Available preferences include:
+
+#### Language
+
+The language to use for Bible reference names and content (e.g. "Salmos 1"
+instead of "Psalms 1"). Please note that this preference does not impact the
+names of the extension's commands or other informational text.
+
+#### Version
+
+The Bible version/translation to use for Bible content (e.g. "ESV" instead of
+"NIV"). The list of available versions is dependent on what language you have
+currently selected.
+
+#### Reference Format
+
+A text string that controls the format of Bible content that you copy to the
+clipboard. It can contain blank lines and most other special characters, as
+well as any of the following "magic" variables:
+
+- `{content}`: The textual content of the Bible reference, minus the citation
+  (e.g. "Jesus wept.")
+- `{name}`: The title of the copied Bible reference, minus the version information
+  (e.g. "John 11:35")
+- `{version}`: The version/translation of the copied Bible reference (e.g.
+  "ESV" or "NIV")
+
+Some examples include:
+
+```
+{name} ({version})
+
+{content}
+```
+
+```
+{content}
+– {name} ({version})
+```
 
 ## Disclaimer
 
