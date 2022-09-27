@@ -1,4 +1,4 @@
-# YouVersion Suggest for Raycast
+# YouVersion Bible Suggest for Raycast
 
 _Copyright 2022 Caleb Evans_  
 _Released under the MIT license_
