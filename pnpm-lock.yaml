@@ -1,11 +1,11 @@
 lockfileVersion: 5.4
 
 specifiers:
-  '@raycast/api': ^1.39.3
+  '@raycast/api': ^1.49.2
   '@types/cheerio': ^0.22.31
   '@types/lodash-es': ^4.17.6
-  '@types/react': ^18.0.33
-  '@types/react-dom': ^18.0.11
+  '@types/react': ^18.0.9
+  '@types/react-dom': ^18.0.9
   '@typescript-eslint/eslint-plugin': ^5.0.0
   '@typescript-eslint/parser': ^5.0.0
   cheerio: ^1.0.0-rc.12
@@ -17,7 +17,7 @@ specifiers:
   typescript: ^4.4.3
 
 dependencies:
-  '@raycast/api': 1.39.3
+  '@raycast/api': 1.49.2_@types+react@18.0.9
   cheerio: 1.0.0-rc.12
   lodash-es: 4.17.21
   node-fetch: 3.2.10
@@ -25,8 +25,8 @@ dependencies:
 devDependencies:
   '@types/cheerio': 0.22.31
   '@types/lodash-es': 4.17.6
-  '@types/react': 18.0.33
-  '@types/react-dom': 18.0.11
+  '@types/react': 18.0.9
+  '@types/react-dom': 18.0.9
   '@typescript-eslint/eslint-plugin': 5.36.1_vkyathpxz3lud4b2p7cl5ubdwu
   '@typescript-eslint/parser': 5.36.1_td6yqss6ra3qoebludh4ctrhym
   eslint: 7.32.0
@@ -109,12 +109,19 @@ packages:
       fastq: 1.13.0
     dev: true
 
-  /@raycast/api/1.39.3:
-    resolution: {integrity: sha512-23ecyzLIpChC9Sm4xmWcbqHW4C9KKpfOkwa2Z8NBHvrgcX8M8zSkQLECywb6pzeRMUsupAd5ugnJECrIGF1ETQ==}
+  /@raycast/api/1.49.2_@types+react@18.0.9:
+    resolution: {integrity: sha512-xuAVLoWsohuuqIMk83oi+hdbyMN2NLM4Am3LK739+vo1TgvGKeL27vryTB8WVY2lpMXX0Mt2yV14H+h3pSNY2Q==}
     hasBin: true
     requiresBuild: true
+    peerDependencies:
+      '@types/node': 18.8.3
+      '@types/react': 18.0.9
+    peerDependenciesMeta:
+      '@types/node':
+        optional: true
+      '@types/react':
+        optional: true
     dependencies:
-      '@types/node': 16.10.3
       '@types/react': 18.0.9
       react: 18.1.0
       react-reconciler: 0.28.0_react@18.1.0
@@ -142,12 +149,13 @@ packages:
 
   /@types/node/16.10.3:
     resolution: {integrity: sha512-ho3Ruq+fFnBrZhUYI46n/bV2GjwzSkwuT4dTf0GkuNFmnb8nq4ny2z9JEVemFi6bdEJanHLlYfy9c6FN9B9McQ==}
+    dev: true
 
   /@types/prop-types/15.7.5:
     resolution: {integrity: sha512-JCB8C6SnDoQf0cNycqd/35A7MjcnK+ZTqE7judS6o7utxUCg6imJg3QK2qzHKszlTjcj2cn+NwMB2i96ubpj7w==}
 
-  /@types/react-dom/18.0.11:
-    resolution: {integrity: sha512-O38bPbI2CWtgw/OoQoY+BRelw7uysmXbWvw3nLWO21H1HSh+GOlqPuXshJfjmpNlKiiSDG9cc1JZAaMmVdcTlw==}
+  /@types/react-dom/18.0.9:
+    resolution: {integrity: sha512-qnVvHxASt/H7i+XG1U1xMiY5t+IHcPGUK7TDMDzom08xa7e86eCeKOiLZezwCKVxJn6NEiiy2ekgX8aQssjIKg==}
     dependencies:
       '@types/react': 18.0.33
     dev: true
@@ -166,7 +174,6 @@ packages:
       '@types/prop-types': 15.7.5
       '@types/scheduler': 0.16.2
       csstype: 3.1.0
-    dev: false
 
   /@types/scheduler/0.16.2:
     resolution: {integrity: sha512-hppQEBDmlwhFAXKJX2KnWLYu5yMfi91yazPb2l+lbJiwW+wdo1gNeRA+3RgNSO39WYX2euey41KEwnqesU2Jew==}
