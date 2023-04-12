@@ -1,5 +1,10 @@
 # YouVersion Bible Suggest Changelog
 
+# v2.1.0 - 2023-04-11
+
+- Updated the Raycast API to the latest version (v1.49.2, at the time of
+  writing)
+
 # v2.0.1 - 2023-04-10
 
 - Fixed a critical bug where the "Copy to Clipboard" functionality would return
