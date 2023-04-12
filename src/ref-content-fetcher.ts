@@ -75,11 +75,10 @@ export function classMatchesOneOf(className: string, elemsSet: Set<string>): boo
   const bool = new RegExp(`\\b(${elemsUnion})\\b`).test(
     // The normal regex word boundary (\b) considers underscores as part of the
     // definition of a "word"; this will not work for us since the class names
-    // we are working with have underscore-delimited components, and we need to
-    // treat each of those components as distinct "words"; fortunately, we can
-    // use negative lookbehinds/lookaheads to effectively implement a custom
-    // word boundary, per this blog post:
-    // <http://www.rexegg.com/regex-boundaries.html#diy>
+    // we are dealing with have underscore-delimited segments, and we need to
+    // treat each of those segments as distinct "words"; fortunately, we can
+    // simply replace underscores in the class name string with hyphens (or
+    // spaces, for that matter) to appease the word boundaries
     className.replace(/_/g, " ")
   );
   return bool;
