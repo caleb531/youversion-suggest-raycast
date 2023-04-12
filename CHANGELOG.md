@@ -1,6 +1,6 @@
 # YouVersion Bible Suggest Changelog
 
-# v2.0.1 - 2022-04-10
+# v2.0.1 - 2023-04-10
 
 - Fixed a critical bug where the "Copy to Clipboard" functionality would return
   an error for any passage; all users are encouraged to upgrade to this release
