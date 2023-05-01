@@ -85,7 +85,7 @@ export default function Command() {
       {state.currentVerseNumbersSetting !== undefined ? (
         <Form.Checkbox
           id="versenumbers"
-          label="Include Verse Numbers?"
+          label="Include Verse Numbers in Content?"
           info="Whether or not to include verse numbers in copied Bible content"
           value={Boolean(state.currentVerseNumbersSetting)}
           onChange={onChangeVerseNumbersSetting}
@@ -94,7 +94,7 @@ export default function Command() {
       {state.currentLineBreaksSetting !== undefined ? (
         <Form.Checkbox
           id="linebreaks"
-          label="Include Line Breaks?"
+          label="Include Line Breaks in Content?"
           info="Whether or not to include line breaks in copied Bible content"
           value={Boolean(state.currentLineBreaksSetting)}
           onChange={onChangeLineBreaksSetting}
