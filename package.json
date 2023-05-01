@@ -31,7 +31,7 @@
     }
   ],
   "dependencies": {
-    "@raycast/api": "^1.49.2",
+    "@raycast/api": "^1.50.0",
     "youversion-suggest": "^1.2.1"
   },
   "devDependencies": {
