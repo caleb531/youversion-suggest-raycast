@@ -1,6 +1,11 @@
 import { Clipboard, showToast, Toast } from "@raycast/api";
 import { fetchReferenceContent } from "youversion-suggest";
-import { getDefaultReferenceFormat, getPreferredReferenceFormat } from "./preferences";
+import {
+  getDefaultReferenceFormat,
+  getPreferredLineBreaksSetting,
+  getPreferredReferenceFormat,
+  getPreferredVerseNumbersSetting,
+} from "./preferences";
 import { BibleReference } from "./types";
 
 export async function applyReferenceFormat(reference: BibleReference, content: string): Promise<string> {
@@ -25,7 +30,10 @@ export async function copyContentToClipboard(reference: BibleReference) {
       style: Toast.Style.Animated,
       title: `Copying ${reference.name} to clipboard...`,
     });
-    const { content } = await fetchReferenceContent(reference.id);
+    const { content } = await fetchReferenceContent(reference.id, {
+      includeVerseNumbers: await getPreferredVerseNumbersSetting(),
+      includeLineBreaks: await getPreferredLineBreaksSetting(),
+    });
     Clipboard.copy(await applyReferenceFormat(reference, content || ""));
     showToast({
       style: Toast.Style.Success,
