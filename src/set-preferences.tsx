@@ -87,7 +87,7 @@ export default function Command() {
           id="versenumbers"
           label="Include Verse Numbers in Content?"
           info="Whether or not to include verse numbers in copied Bible content"
-          value={Boolean(state.currentVerseNumbersSetting)}
+          value={state.currentVerseNumbersSetting}
           onChange={onChangeVerseNumbersSetting}
         />
       ) : null}
@@ -96,7 +96,7 @@ export default function Command() {
           id="linebreaks"
           label="Include Line Breaks in Content?"
           info="Whether or not to include line breaks in copied Bible content"
-          value={Boolean(state.currentLineBreaksSetting)}
+          value={state.currentLineBreaksSetting}
           onChange={onChangeLineBreaksSetting}
         />
       ) : null}
