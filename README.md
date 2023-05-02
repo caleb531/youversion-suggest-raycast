@@ -83,7 +83,7 @@ clipboard. This preference is off by default.
 
 #### Preserve Line Breaks in Content?
 
-If checks, preserves the line breaks that are part of some Bible content. For
+If checked, preserves the line breaks that are part of some Bible content. For
 example, if you want to copy a verse from the Psalms to your clipboard all on
 one line, then turn this preference off. This preference is on by default.
 
