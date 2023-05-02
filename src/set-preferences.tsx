@@ -94,8 +94,8 @@ export default function Command() {
       {state.currentLineBreaksSetting !== undefined ? (
         <Form.Checkbox
           id="linebreaks"
-          label="Include Line Breaks in Content?"
-          info="Whether or not to include line breaks in copied Bible content"
+          label="Preserve Line Breaks in Content?"
+          info="Whether or not to preserve line breaks in copied Bible content"
           value={state.currentLineBreaksSetting}
           onChange={onChangeLineBreaksSetting}
         />
