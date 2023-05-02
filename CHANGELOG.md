@@ -1,5 +1,14 @@
 # YouVersion Bible Suggest Changelog
 
+## [v3.1.0] - 2023-05-02
+
+- Added a new setting to control the inclusion of verse numbers in copied Bible
+  content
+- Added a new setting to control the preservation of line breaks in copied Bible
+  content (useful for verses from books like Psalms or Proverbs)
+- Updated Raycast API to v1.50.1
+- Removed obsolete code from codebase
+
 ## [v3.0.0] - 2023-04-25
 
 - Fetched the latest Bible data from YouVersion
