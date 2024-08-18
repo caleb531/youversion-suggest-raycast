@@ -35,14 +35,15 @@
     "youversion-suggest": "^2.2.0"
   },
   "devDependencies": {
+    "@eslint/js": "^9.9.0",
     "@types/react": "18.2.27",
     "@types/react-dom": "^18.2.18",
-    "@typescript-eslint/eslint-plugin": "^6.18.1",
-    "@typescript-eslint/parser": "^6.18.1",
-    "eslint": "^8.56.0",
+    "eslint": "^9.9.0",
     "eslint-config-prettier": "^9.1.0",
+    "globals": "^15.9.0",
     "prettier": "^3.1.1",
-    "typescript": "^5.3.3"
+    "typescript": "^5.3.3",
+    "typescript-eslint": "^8.1.0"
   },
   "scripts": {
     "build": "ray build -e dist",
