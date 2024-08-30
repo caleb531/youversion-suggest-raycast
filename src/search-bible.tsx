@@ -1,6 +1,7 @@
 import { List, showToast, Toast } from "@raycast/api";
 import { useCallback, useEffect, useState } from "react";
 import { getReferencesMatchingPhrase } from "youversion-suggest";
+import "./fetch-polyfill";
 import { getPreferredLanguage, getPreferredVersion } from "./preferences";
 import ReferenceActions from "./reference-actions";
 import { BibleReference } from "./types";
