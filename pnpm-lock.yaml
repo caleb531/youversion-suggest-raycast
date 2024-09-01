@@ -12,8 +12,8 @@ dependencies:
     specifier: ^0.9.21
     version: 0.9.21
   youversion-suggest:
-    specifier: ^3.0.0-beta.6
-    version: 3.0.0-beta.6
+    specifier: ^3.0.0-beta.7
+    version: 3.0.0-beta.7
 
 devDependencies:
   '@eslint/js':
@@ -1039,8 +1039,8 @@ packages:
     engines: {node: '>=10'}
     dev: true
 
-  /youversion-suggest@3.0.0-beta.6:
-    resolution: {integrity: sha512-p6prk59vjsWKbiykhz5lULbawnVOiTOHlqs/pXohNCpPPVKv65FnJfizSq9UJwWuj5YTZS0f/CmTMLIex5zJ+g==}
+  /youversion-suggest@3.0.0-beta.7:
+    resolution: {integrity: sha512-I/cw9GrTnzPU43VW+FGPs0L3GyVTh0XV648uwAXzxaip7dvG9O5W3WbSSxkD3fubqz38b3svgWVRLYSQ7a6KvQ==}
     engines: {node: '>=18.0.0'}
     dependencies:
       '@worker-tools/html-rewriter': 0.1.0-pre.19
