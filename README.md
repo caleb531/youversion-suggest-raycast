@@ -26,11 +26,6 @@ YouVersion's Terms of Use.
 [raycast]: https://www.raycast.com/
 [extension-in-store]: https://www.raycast.com/caleb531/youversion-suggest
 
-## Screenshots
-
-![Filter Bible Reference](./media/screenshot-filter.png)
-![Search the Bible by Phrase](./media/screenshot-search.png)
-
 ## Commands
 
 ### Filter Bible Reference
