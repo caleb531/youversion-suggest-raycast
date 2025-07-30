@@ -32,6 +32,7 @@
   ],
   "dependencies": {
     "@raycast/api": "^1.102.2",
+    "@raycast/utils": "^2.2.0",
     "youversion-suggest": "^3.0.0"
   },
   "devDependencies": {
