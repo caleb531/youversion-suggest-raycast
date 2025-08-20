@@ -1,6 +1,11 @@
 # YouVersion Bible Suggest Changelog
 
-## [v3.6.0] - {PR_MERGE_DATE}
+## [v3.7.0] - {PR_MERGE_DATE}
+
+- Refactored command code to follow Raycast best practices
+- Updated all dependencies to their latest versions
+
+## [v3.6.0] - 2025-07-31
 
 - Adopted more modern engine for fetching Bible data
 - Removed obsolete code and packages
