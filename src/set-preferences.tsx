@@ -117,9 +117,10 @@ function usePreferences() {
   });
 
   useEffect(() => {
-    getPreferenceFormData().then((newState) => {
+    (async () => {
+      const newState = await getPreferenceFormData();
       setState({ isLoading: false, ...newState });
-    });
+    })();
   }, []);
 
   const onChangeLanguage = useCallback(async (newValue: string) => {
